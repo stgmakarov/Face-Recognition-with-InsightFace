@@ -14,6 +14,7 @@ import time
 import dlib
 import cv2
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 ap = argparse.ArgumentParser()
 
