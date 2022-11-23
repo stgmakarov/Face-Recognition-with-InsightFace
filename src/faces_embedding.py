@@ -1,11 +1,12 @@
 import sys
+
+import face_model
+
 sys.path.append('../insightface/deploy')
 sys.path.append('../insightface/src/common')
 
 from imutils import paths
-import face_preprocess
 import numpy as np
-import face_model
 import argparse
 import pickle
 import cv2
