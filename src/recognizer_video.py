@@ -1,4 +1,6 @@
 import sys
+
+RECOGNIZE_FRAME_RATE = 5
 sys.path.append('../insightface/deploy')
 sys.path.append('../insightface/src/common')
 
@@ -98,7 +100,7 @@ while True:
     frame = cv2.resize(frame, (save_width, save_height))
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    if frames%3 == 0:
+    if frames % RECOGNIZE_FRAME_RATE == 0:
         trackers = []
         texts = []
 
@@ -147,7 +149,7 @@ while True:
                 texts.append(text)
 
                 y = bbox[1] - 10 if bbox[1] - 10 > 10 else bbox[1] + 10
-                cv2.putText(frame, text, (bbox[0], y), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
+                cv2.putText(frame, text, (bbox[0], y), cv2.FONT_HERSHEY_COMPLEX, 0.45, (0, 0, 255), 2)
                 cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,0,0), 2)
     else:
         for tracker, text in zip(trackers,texts):
@@ -160,7 +162,7 @@ while True:
             endY = int(pos.bottom())
 
             cv2.rectangle(frame, (startX, startY), (endX, endY), (255,0,0), 2)
-            cv2.putText(frame, text, (startX, startY - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0,0,255),2)
+            cv2.putText(frame, text, (startX, startY - 15), cv2.FONT_HERSHEY_COMPLEX, 0.45, (0,0,255),2)
 
     cv2.imshow("Frame", frame)
     video_out.write(frame)

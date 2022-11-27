@@ -1,5 +1,7 @@
 import sys
 
+RECOGNIZE_FRAME_RATE = 10
+
 sys.path.append('../insightface/deploy')
 sys.path.append('../insightface/src/common')
 
@@ -16,8 +18,6 @@ import dlib
 import cv2
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-
 ap = argparse.ArgumentParser()
 
 ap.add_argument("--mymodel", default="outputs/my_model.h5",
@@ -28,6 +28,8 @@ ap.add_argument("--embeddings", default="outputs/embeddings.pickle",
                 help='Path to embeddings')
 ap.add_argument("--video-out", default="../datasets/videos_output/stream_test.mp4",
                 help='Path to output video')
+ap.add_argument("--video-in", default="",
+                help='Input video')
 
 ap.add_argument('--image-size', default='112,112', help='')
 ap.add_argument('--model', default='../insightface/models/model-y1-test2/model,0', help='path to load model.')
@@ -89,7 +91,10 @@ texts = []
 frames = 0
 
 # Start streaming and recording
-cap = cv2.VideoCapture(0)
+if args.video_in=="":
+    cap = cv2.VideoCapture(0)
+else:
+    cap = cv2.VideoCapture(args.video_in)
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 save_width = 600
@@ -102,7 +107,7 @@ while True:
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     frame = cv2.resize(frame, (save_width, save_height))
 
-    if frames % 3 == 0:
+    if frames % RECOGNIZE_FRAME_RATE == 0:
         trackers = []
         texts = []
 

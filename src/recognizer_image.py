@@ -85,6 +85,13 @@ proba_threshold = 0.85
 comparing_num = 5
 
 img = cv2.imread(args.image_in)
+scale_percent = 20  # percent of original size
+width = int(img.shape[1] * scale_percent / 100)
+height = int(img.shape[0] * scale_percent / 100)
+dim = (width, height)
+
+# resize image
+img = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
 
 bboxes = detector.detect_faces(img)
 
@@ -125,7 +132,7 @@ if len(bboxes) != 0:
             print("Recognized: {} <{:.2f}>".format(name, proba * 100))
 
         y = bbox[1] - 10 if bbox[1] - 10 > 10 else bbox[1] + 10
-        cv2.putText(img, text, (bbox[0], y), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
+        cv2.putText(img, text, (bbox[0], y), cv2.FONT_HERSHEY_COMPLEX, 0.45, (0, 0, 255), 2)
         cv2.rectangle(img, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255, 0, 0), 2)
 
 cv2.imshow("Figure", img)
